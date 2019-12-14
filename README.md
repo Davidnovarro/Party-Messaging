@@ -4,7 +4,7 @@ Party Messaging is a powerful high-level message networking solution for Client 
 ### Features
 - Persistent Alive connections.
 - Message sending/listening.
-- Queries, the request/response type of messaging.
+- Queries: the request/response type of messaging.
 - Message pipelining: the ability to write multiple messages and send them as one packet to reduce overhead.
 - Tolerance for the differences in message declarations: the field in a message declaration can be renamed, removed or added and it will continue to be operational.
 - Nested values in messages.
