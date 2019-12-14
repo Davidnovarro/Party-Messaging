@@ -13,7 +13,7 @@ Party Messaging is a powerful high-level message networking solution for Client 
 - Support for custom serialization.
 
 
-### Network Client / Server example
+## Network Client / Server example
 There is no Client to Client connection so in this example will be sending Chat messages to the server and it will transmit them to receivers.
 
 ##### First declare the message type
@@ -142,7 +142,7 @@ protected override void OnChatMessageReceived(NetworkConnection conn, ChatMessag
 }
 ```
 
-### Queries
+## Queries
 Queries are a simple way to communicate in a request/response style. Usually, this method is used only when communicating from Client > to > Server, but Party-Messaging supports any type of connection, both Client and Server can listen for a query message and send a response for it.
 For example, you may want the Server to ask the Client what is he doing currently and in case if there is no response (timeout) perform certain actions.
 
