@@ -101,9 +101,9 @@ public void SendMultipleMessages()
 
     //Sending pipelined messages, they will be received as usual ones
     Client.PipeMessage(msg1)
-            .PipeMessage(msg2)
-            .PipeMessage(msg3)
-            .Send();
+          .PipeMessage(msg2)
+          .PipeMessage(msg3)
+          .Send();
 }
 
 protected override void OnChatMessageReceived(NetworkConnection conn, ChatMessage msg)
