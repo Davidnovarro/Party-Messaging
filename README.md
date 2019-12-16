@@ -4,7 +4,7 @@ Party Messaging is a powerful high-level message networking solution for Client 
 ### Features
 - Persistent Alive connections.
 - Message sending/listening.
-- Queries: the request/response type of messaging.
+- Queries: the request/response messaging style.
 - Message pipelining: the ability to write multiple messages and send them as one packet to reduce overhead.
 - Tolerance for the differences in message declarations: the field in a message declaration can be renamed, removed or added and it will continue to be operational.
 - Nested values in messages.
@@ -14,7 +14,7 @@ Party Messaging is a powerful high-level message networking solution for Client 
 
 
 ## Network Client / Server example
-There is no Client to Client connection so in this example will be sending Chat messages to the server and it will transmit them to receivers.
+There is no Client to Client connection so in this example we'll be sending Chat messages to the server and it will transmit them to receivers.
 
 ##### First declare the message type
 Messages need to implement the IMessage interface and they can be both value or reference types.
