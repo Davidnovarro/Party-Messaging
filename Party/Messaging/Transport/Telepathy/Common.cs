@@ -282,7 +282,7 @@ namespace Telepathy
                 // something went wrong. the thread was interrupted or the
                 // connection closed or we closed our own connection or ...
                 // -> either way we should stop gracefully
-                if (Logger.PushInfo) Logger.Info("SendLoop Exception: connectionId=" + connectionId + " reason: " + exception);
+                if(Logger.PushInfo) Logger.Info("SendLoop Exception: connectionId=" + connectionId + " reason: " + exception);
             }
             finally
             {

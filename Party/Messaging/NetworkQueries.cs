@@ -13,7 +13,7 @@ namespace Party.Messaging
         private double lastTimeoutCheck;
 
         public NetworkQueries(NetworkBase manager) : base(manager) { }
-        
+
         public void AddListener<T>(Action<NetworkConnection, T> listener) where T : IRequestMessage
         {
             Manager.AddListener<T>(listener);
@@ -66,7 +66,7 @@ namespace Party.Messaging
 
         public bool Respond<TRequest, TResponse>(NetworkConnection conn, TResponse respose, TRequest request) where TRequest : IRequestMessage where TResponse : IResponseMessage
         {
-            if(!request.HasCallback())
+            if (!request.HasCallback())
             {
                 Logger.Warning("Response has no listener callback");
                 return false;
@@ -79,10 +79,10 @@ namespace Party.Messaging
         {
             Logger.Error("QueryError for connection " + conn?.ConnectionId + " " + message.ToString());
         }
-        
+
         internal void TimeoutCheck()
         {
-            if(Time.ElapsedSince(lastTimeoutCheck) > 0.1d)
+            if (Time.ElapsedSince(lastTimeoutCheck) > 0.1d)
             {
                 lastTimeoutCheck = Time.time;
                 foreach (var qh in queryHandlers.Values)
@@ -93,7 +93,7 @@ namespace Party.Messaging
         }
 
     }
-    
+
     internal class QueryResponsePublisher
     {
         private readonly ConcurrentDictionary<ushort, QueryCallback<IResponseMessage>> queries = new ConcurrentDictionary<ushort, QueryCallback<IResponseMessage>>();

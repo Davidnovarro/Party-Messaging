@@ -3,12 +3,12 @@
     public static class Logger
     {
 
-        public static bool PushDebug = true;
+        public static bool PushDebug = false;
 
         public static bool PushInfo = true;
 
         public static bool PushWarnig = true;
-
+        
         public static bool PushError = true;
 
         public static void Debug(string value)

@@ -42,13 +42,11 @@ namespace Party.Messaging
         protected virtual void RaiseOnConnected()
         {
             Connection = new NetworkConnection(0);
-            Logger.Debug("Connected");
             OnConnected?.Invoke();
         }
 
         protected virtual void RaiseOnDisconnected()
         {
-            Logger.Debug("Disconnected");
             OnDisconnected?.Invoke();
         }
                

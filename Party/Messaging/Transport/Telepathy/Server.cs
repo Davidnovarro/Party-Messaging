@@ -41,7 +41,7 @@ namespace Telepathy
 
         // connectionId counter
         int counter;
-
+        
         // public next id function in case someone needs to reserve an id
         // (e.g. if hostMode should always have 0 connection and external
         //  connections should start at 1, etc.)
@@ -80,7 +80,7 @@ namespace Telepathy
                 listener.Server.NoDelay = NoDelay;
                 listener.Server.SendTimeout = SendTimeout;
                 listener.Start();
-                if (Logger.PushInfo) Logger.Info("Server: listening port=" + port);
+                if(Logger.PushInfo) Logger.Info("Server: listening port=" + port);
 
                 // keep accepting new clients
                 while (true)
@@ -228,7 +228,7 @@ namespace Telepathy
                 TcpClient client = kvp.Value.client;
                 // close the stream if not closed yet. it may have been closed
                 // by a disconnect already, so use try/catch
-                try { client.GetStream().Close(); } catch { }
+                try { client.GetStream().Close(); } catch {}
                 client.Close();
             }
 
@@ -289,7 +289,7 @@ namespace Telepathy
             {
                 // just close it. client thread will take care of the rest.
                 token.client.Close();
-                if (Logger.PushInfo) Logger.Info("Server.Disconnect connectionId: " + connectionId);
+                if(Logger.PushInfo) Logger.Info("Server.Disconnect connectionId: " + connectionId);
                 return true;
             }
             return false;
