@@ -42,11 +42,13 @@ namespace Party.Messaging
         protected virtual void RaiseOnConnected()
         {
             Connection = new NetworkConnection(0);
+            Logger.Debug("Connected");
             OnConnected?.Invoke();
         }
 
         protected virtual void RaiseOnDisconnected()
         {
+            Logger.Debug("Disconnected");
             OnDisconnected?.Invoke();
         }
                
@@ -101,9 +103,10 @@ namespace Party.Messaging
             return Send(data);
         }
 
-        public override void TransportDisconnect(int connectionId)
+        public override bool TransportDisconnect(int connectionId)
         {
             Disconnect();
+            return true;
         }
 
         protected override void InvokeHandler(int connectionId, ushort msgId, NetworkReader reader)

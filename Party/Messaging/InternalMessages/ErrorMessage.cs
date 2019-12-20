@@ -17,7 +17,7 @@ namespace Party.Messaging.InternalMessages
     {
         public ushort GetId { get { return _mid; } }
 
-        static readonly ushort _mid = MessageIdProvider.GetId<ErrorMessage>();
+        static readonly ushort _mid = TypeIdProvider.GetId<ErrorMessage>();
 
         [ProtoMember(1)]
         public ErrorCode code;

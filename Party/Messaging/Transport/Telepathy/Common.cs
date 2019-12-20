@@ -1,4 +1,5 @@
 ﻿// common code used by server and client
+using Party.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
@@ -114,7 +115,7 @@ namespace Telepathy
             catch (Exception exception)
             {
                 // log as regular message because servers do shut down sometimes
-                Logger.LogError("Send: stream.Write exception: " + exception);
+                Logger.Error("Send: stream.Write exception: " + exception);
                 return false;
             }
         }
@@ -144,7 +145,7 @@ namespace Telepathy
                 content = new byte[size];
                 return stream.ReadExactly(content, size);
             }
-            Logger.LogWarning("ReadMessageBlocking: possible allocation attack with a header of: " + size + " bytes.");
+            Logger.Warning("ReadMessageBlocking: possible allocation attack with a header of: " + size + " bytes.");
             return false;
         }
 
@@ -203,7 +204,7 @@ namespace Telepathy
                         TimeSpan elapsed = DateTime.Now - messageQueueLastWarning;
                         if (elapsed.TotalSeconds > 10)
                         {
-                            Logger.LogWarning("ReceiveLoop: messageQueue is getting big(" + receiveQueue.Count + "), try calling GetNextMessage more often. You can call it more than once per frame!");
+                            Logger.Warning("ReceiveLoop: messageQueue is getting big(" + receiveQueue.Count + "), try calling GetNextMessage more often. You can call it more than once per frame!");
                             messageQueueLastWarning = DateTime.Now;
                         }
                     }
@@ -214,7 +215,7 @@ namespace Telepathy
                 // something went wrong. the thread was interrupted or the
                 // connection closed or we closed our own connection or ...
                 // -> either way we should stop gracefully
-                Logger.Log("ReceiveLoop: finished receive function for connectionId=" + connectionId + " reason: " + exception);
+                Logger.Error("ReceiveLoop: finished receive function for connectionId=" + connectionId + " reason: " + exception);
             }
             finally
             {
@@ -281,7 +282,7 @@ namespace Telepathy
                 // something went wrong. the thread was interrupted or the
                 // connection closed or we closed our own connection or ...
                 // -> either way we should stop gracefully
-                Logger.Log("SendLoop Exception: connectionId=" + connectionId + " reason: " + exception);
+                if (Logger.PushInfo) Logger.Info("SendLoop Exception: connectionId=" + connectionId + " reason: " + exception);
             }
             finally
             {

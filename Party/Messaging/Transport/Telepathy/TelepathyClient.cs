@@ -1,13 +1,13 @@
-﻿using Party.Messaging.Serialization;
-using System;
+﻿using System;
 using Telepathy;
+using Party.Messaging.Serialization;
 
 namespace Party.Messaging.Transport.Telepathy
 {
     public class TelepathyClient : NetworkClient
     {
 
-        internal readonly Client Client = new Client();
+        internal readonly global::Telepathy.Client Client = new global::Telepathy.Client();
         
         public override bool Connected
         {
@@ -51,7 +51,6 @@ namespace Party.Messaging.Transport.Telepathy
         public override void Disconnect()
         {
             Client.Disconnect();
-            RaiseOnDisconnected();
         }
 
         protected override bool Send(ArraySegment<byte> data)

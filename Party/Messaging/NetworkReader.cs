@@ -322,11 +322,16 @@ namespace Party.Messaging
             throw new NotImplementedException("Can't write into read only stream");
         }
 
+        public void Reload(byte[] array)
+        {
+            buffer = new ArraySegment<byte>(array);
+            Position = 0;
+        }
+
         public void Reload(ArraySegment<byte> segment)
         {
             buffer = segment;
             Position = 0;
         }
-
     }
 }

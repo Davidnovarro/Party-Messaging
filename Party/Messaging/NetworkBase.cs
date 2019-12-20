@@ -10,8 +10,6 @@ namespace Party.Messaging
 {
     public abstract class NetworkBase
     {
-        private readonly object _lock = new object();
-
         protected readonly ConcurrentDictionary<ushort, IMessageDeserializer> Handlers = new ConcurrentDictionary<ushort, IMessageDeserializer>();
         
         protected readonly ThreadLocal<NetworkReader> Reader = new ThreadLocal<NetworkReader>(() => new NetworkReader(new byte[0]));
@@ -23,6 +21,8 @@ namespace Party.Messaging
         public readonly NetworkKeepAlive KeepAlive;
 
         public readonly NetworkQueries Queries;
+
+        private readonly object _lock = new object();
 
         public NetworkBase() : this(new ProtobufSerializer()) { }
 
@@ -41,7 +41,7 @@ namespace Party.Messaging
 
         protected abstract bool TransportSend(int connectionId, ArraySegment<byte> data);
 
-        public abstract void TransportDisconnect(int connectionId);
+        public abstract bool TransportDisconnect(int connectionId);
 
         public virtual bool Send<T>(NetworkConnection connection, T msg) where T : IMessage
         {
@@ -61,7 +61,7 @@ namespace Party.Messaging
 
         public void AddListener<T>(Action<NetworkConnection, T> listener) where T : IMessage
         {
-            ushort msgId = MessageIdProvider.GetId<T>();
+            ushort msgId = TypeIdProvider.GetId<T>();
 
             //We need to lock because we will do multiple actions with the dict
             lock (_lock)
@@ -82,7 +82,7 @@ namespace Party.Messaging
 
         public void RemoveListener<T>(Action<NetworkConnection, T> listener) where T : IMessage
         {
-            ushort msgId = MessageIdProvider.GetId<T>();
+            ushort msgId = TypeIdProvider.GetId<T>();
 
             //We need to lock because we will do multiple actions with the dict
             lock (_lock)
@@ -106,7 +106,7 @@ namespace Party.Messaging
 
                 if (msgId == 0)
                 {
-                    Logger.Warning("Message ID, no message is received");
+                    Logger.Error("Message ID == 0, no message is received");
                     TransportDisconnect(connectionId);
                     return;
                 }

@@ -8,12 +8,12 @@ namespace Party.Messaging.Transport.Telepathy
     public class TelepathyServer : NetworkServer
     {
 
-        internal readonly Server Server = new Server();
+        internal readonly global::Telepathy.Server Server = new global::Telepathy.Server();
 
         public override bool Active
         {
             get
-            {
+            {                
                 return Server.Active;
             }
         }
@@ -69,10 +69,9 @@ namespace Party.Messaging.Transport.Telepathy
             return Server.Send(connectionId, arr);
         }
 
-        public override void TransportDisconnect(int connectionId)
+        public override bool TransportDisconnect(int connectionId)
         {
-            Server.Disconnect(connectionId);
-            RaiseOnDisconnected(connectionId);
+            return Server.Disconnect(connectionId);
         }
     }
 }

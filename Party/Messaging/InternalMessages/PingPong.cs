@@ -7,7 +7,7 @@ namespace Party.Messaging.InternalMessages
     {
         public ushort GetId { get { return _mid; } }
 
-        static readonly ushort _mid = MessageIdProvider.GetId<PingMessage>();
+        static readonly ushort _mid = TypeIdProvider.GetId<PingMessage>();
 
         [ProtoMember(1)]
         public double pingTimestamp;
@@ -24,7 +24,7 @@ namespace Party.Messaging.InternalMessages
     {
         public ushort GetId { get { return _mid; } }
 
-        static readonly ushort _mid = MessageIdProvider.GetId<PongMessage>();
+        static readonly ushort _mid = TypeIdProvider.GetId<PongMessage>();
 
         [ProtoMember(1)]
         public double pingTimestamp;

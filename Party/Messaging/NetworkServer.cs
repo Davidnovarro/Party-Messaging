@@ -38,22 +38,18 @@ namespace Party.Messaging
         {
             var conn = new NetworkConnection(connectionId);
             if (!Connections.TryAdd(connectionId, conn))
-            {
                 Logger.Error("Connection is already exist in dictionary");
-            }
-
-            OnConnected?.Invoke(conn);
+            else
+                OnConnected?.Invoke(conn);
         }
 
         protected virtual void RaiseOnDisconnected(int connectionId)
         {
             NetworkConnection conn;
             if (!Connections.TryRemove(connectionId, out conn))
-            {
                 Logger.Warning("Connection is already removed");
-            }
-
-            OnDisconnected?.Invoke(conn);
+            else
+                OnDisconnected?.Invoke(conn);
         }
 
         public NetworkServer PipeMessage<T>(T msg) where T : IMessage

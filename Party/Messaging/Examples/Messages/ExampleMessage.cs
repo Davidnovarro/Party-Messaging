@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Party.Messaging.Messages
+namespace Party.Messaging.Examples.Messages
 {
     [ProtoContract]
     public struct ExampleMessage : IMessage

@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Party.Messaging.QueryMessages
+namespace Party.Messaging.Examples.Queries
 {
     [ProtoContract]
     public struct ExampleRequestMessage : IRequestMessage

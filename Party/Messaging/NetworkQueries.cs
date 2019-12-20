@@ -31,34 +31,46 @@ namespace Party.Messaging
 
         public bool Request<TRequest, TResponse>(NetworkConnection conn, TRequest request, Action<NetworkConnection, TResponse> callback, Action<NetworkConnection, ErrorMessage> errorCallback, double timeOut) where TRequest : IRequestMessage where TResponse : IResponseMessage
         {
-            QueryResponsePublisher pub;
-
-            if (!queryHandlers.TryGetValue(request.GetId, out pub))
+            if (callback != null || errorCallback != null)
             {
-                pub = new QueryResponsePublisher();
+                QueryResponsePublisher pub;
 
-                Manager.AddListener<TResponse>((c, r) =>
+                if (!queryHandlers.TryGetValue(request.GetId, out pub))
                 {
-                    pub.PublishQueryResponse(c, r.QueryId, r);
-                });
+                    pub = new QueryResponsePublisher();
 
-                if (!queryHandlers.TryAdd(request.GetId, pub))
-                {
-                    Logger.Error("Can't add response publisher to queryHandlers : " + request.GetId);
+                    Manager.AddListener<TResponse>((c, r) =>
+                    {
+                        pub.PublishQueryResponse(c, r.QueryId, r);
+                    });
+
+                    if (!queryHandlers.TryAdd(request.GetId, pub))
+                    {
+                        Logger.Error("Can't add response publisher to queryHandlers : " + request.GetId);
+                    }
                 }
+
+                request.QueryId = TypeIdProvider.GetNextQueryId();
+
+                var queryCallback = new QueryCallback<IResponseMessage>((c, m) => callback.Invoke(c, (TResponse)m), errorCallback, Time.time + timeOut);
+
+                pub.AddCallback(request.QueryId, queryCallback);
             }
-
-            request.QueryId = MessageIdProvider.GetNextQueryId();
-
-            var query = new QueryCallback<IResponseMessage>((c, m) => callback.Invoke(c, (TResponse)m), errorCallback, Time.time + timeOut);
-
-            pub.AddCallback(request.QueryId, query);
+            else
+            {
+                request.QueryId = 0;
+            }
 
             return Manager.Send(conn, request);
         }
 
         public bool Respond<TRequest, TResponse>(NetworkConnection conn, TResponse respose, TRequest request) where TRequest : IRequestMessage where TResponse : IResponseMessage
         {
+            if(!request.HasCallback())
+            {
+                Logger.Warning("Response has no listener callback");
+                return false;
+            }
             respose.QueryId = request.QueryId;
             return Manager.Send(conn, respose);
         }
@@ -108,7 +120,7 @@ namespace Party.Messaging
                         Logger.Error("Can't remove query");
                     else
                     {
-                        q.Value.ErrorCallback.Invoke(null, new ErrorMessage() { code = ErrorCode.RequestTimeout });
+                        q.Value.ErrorCallback?.Invoke(null, new ErrorMessage() { code = ErrorCode.RequestTimeout });
                     }
                 }
             }
@@ -119,7 +131,7 @@ namespace Party.Messaging
             QueryCallback<IResponseMessage> q;
             if (queries.TryRemove(queryId, out q))
             {
-                q.ResponseCallback.Invoke(connection, response);
+                q.ResponseCallback?.Invoke(connection, response);
                 return;
             }
             else

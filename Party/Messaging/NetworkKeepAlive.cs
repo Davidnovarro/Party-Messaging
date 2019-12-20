@@ -50,7 +50,7 @@ namespace Party.Messaging
             {
                 var msg = new ErrorMessage() { code = ErrorCode.MessageSpamming };
                 Manager.Send(conn, msg);
-                Logger.Error(conn + " is spamming with messages, disconnecting.");
+                if (Logger.PushDebug) Logger.Error(conn + " is spamming with messages, disconnecting.");
                 Manager.TransportDisconnect(conn.ConnectionId);
             }
 
@@ -59,7 +59,7 @@ namespace Party.Messaging
 
             if (conn.currentPingAttempts <= 0)
             {
-                Logger.Debug(string.Format("No inbound data for {0} seconds, Pinging to keep alive", Time.ElapsedSince(conn.LastInboundTimestamp)));
+                if(Logger.PushDebug) Logger.Debug(string.Format("No inbound data for {0} seconds, Pinging to keep alive", Time.ElapsedSince(conn.LastInboundTimestamp)));
                 conn.currentPingAttempts = 0;
                 Ping(conn);
                 return;
@@ -68,7 +68,7 @@ namespace Party.Messaging
             {
                 if (conn.currentPingAttempts < MaxRetry)
                 {
-                    Logger.Debug(string.Format("No ping response for {0} seconds, retrying", RetryInterval));
+                    if (Logger.PushDebug) Logger.Debug(string.Format("No ping response for {0} seconds, retrying", RetryInterval));
                     Ping(conn);
                 }
                 else
