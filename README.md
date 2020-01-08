@@ -5,7 +5,7 @@ Party Messaging is a powerful high-level message networking solution for Client 
 - Persistent Alive connections.
 - Message sending/listening.
 - Queries: the request/response messaging style.
-- Message pipelining: the ability to write multiple messages and send them as one packet to reduce overhead.
+- Message batching: the ability to write multiple messages and send them as one packet to reduce overhead.
 - Tolerance for the differences in message declarations: the field in a message declaration can be renamed, removed or added and it will continue to be operational.
 - Nested values in messages.
 - Prevent connection from message spamming.
@@ -99,10 +99,10 @@ public void SendMultipleMessages()
         someField = "Foo"
     };
 
-    //Sending pipelined messages, they will be received as usual ones
-    Client.PipeMessage(msg1)
-          .PipeMessage(msg2)
-          .PipeMessage(msg3)
+    //Sending batched messages, they will be received as usual ones
+    Client.BatchMessage(msg1)
+          .BatchMessage(msg2)
+          .BatchMessage(msg3)
           .Send();
 }
 
