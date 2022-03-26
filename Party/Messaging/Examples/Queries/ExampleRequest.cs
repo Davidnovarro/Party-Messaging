@@ -7,7 +7,7 @@ namespace Party.Messaging.Examples.Queries
     {
         public ushort GetId { get { return _mid; } }
         
-        static readonly ushort _mid = MessageIdProvider.GetId<ExampleRequestMessage>();
+        static readonly ushort _mid = TypeIdProvider.GetId<ExampleRequestMessage>();
 
         [ProtoMember(1)]
         public ushort QueryId { get; set; }
@@ -21,7 +21,7 @@ namespace Party.Messaging.Examples.Queries
     {
         public ushort GetId { get { return _mid; } }
         
-        static readonly ushort _mid = MessageIdProvider.GetId<ExampleResponseMessage>();
+        static readonly ushort _mid = TypeIdProvider.GetId<ExampleResponseMessage>();
 
         [ProtoMember(1)]
         public ushort QueryId { get; set; }
